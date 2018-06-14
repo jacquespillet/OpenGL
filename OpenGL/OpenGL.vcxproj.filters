@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Fichiers sources\Shaders">
+      <UniqueIdentifier>{2e36151c-faa0-4819-b75e-8081df5f9e6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Models">
+      <UniqueIdentifier>{da81a29d-3f76-4461-81f9-aa296f27964d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Models">
+      <UniqueIdentifier>{8fce39dc-f262-42f7-b401-a6fddf8d0b59}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OpenGL.cpp">
@@ -21,36 +30,69 @@
     <ClCompile Include="glad.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="Source.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Fichiers sources\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionalLight.cpp">
+      <Filter>Fichiers sources\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Fichiers sources\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Fichiers sources\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\Basic.frag">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\Shaders</Filter>
     </None>
     <None Include="shaders\Basic.vert">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\Light.frag">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\Light.vert">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\Reflect.frag">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\Reflect.vert">
+      <Filter>Fichiers sources\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Shader.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="stb_image.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="variables.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Fichiers d%27en-tête\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Fichiers d%27en-tête\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLight.h">
+      <Filter>Fichiers d%27en-tête\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Fichiers d%27en-tête\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Fichiers d%27en-tête\Models</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

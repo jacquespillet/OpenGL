@@ -123,19 +123,30 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="OpenGL.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\Basic.frag" />
     <None Include="shaders\Basic.vert" />
+    <None Include="shaders\Light.frag" />
+    <None Include="shaders\Light.vert" />
+    <None Include="shaders\Reflect.frag" />
+    <None Include="shaders\Reflect.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="utils.h" />
     <ClInclude Include="variables.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

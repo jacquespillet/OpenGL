@@ -83,6 +83,10 @@ public:
 		unsigned int viewLoc = glGetUniformLocation(ID, name.c_str());
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(value));
 	}
+	void setVec3(const std::string &name, glm::vec3 value) {
+		unsigned int viewLoc = glGetUniformLocation(ID, name.c_str());
+		glUniform3f(viewLoc, value[0], value[1], value[2]);
+	}
 	~Shader() {}
 };
 
