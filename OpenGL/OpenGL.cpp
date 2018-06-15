@@ -3,22 +3,26 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glad/glad.h> 
 #include <GLFW/glfw3.h>
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include "Shader.h"
-#include "libs/stb_image.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
-#include "Camera.h"
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+
+#include "Types.h"
+#include "libs/stb_image.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
-#include "variables.h"
-#include "utils.h"
+#include "Shader.h"
+#include "Camera.h"
+#include "Model.h"
 
-using namespace std;
+#include "utils.h"
+#include "variables.h"
+
 
 void resizeFunc(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
@@ -152,6 +156,8 @@ int main()
 	PointLight pointLight3 = PointLight(glm::vec3(0.3, 0.5, 0.8), glm::vec3(1.0, 1.0, 1.0), glm::vec3(0.6, 0.8, 0.76), pointLightPositions[3], 1.0, 0.35, 0.44);
 	pointLight3.attachToShader(shader, "pointLights[3]");
 
+	Shader ourShader("shaders/Basic.vert", "shaders/Basic.frag");
+	Model suitModel = Model("3D_Models/Suit/nanosuit.obj");
 
 	while (!glfwWindowShouldClose(window)) {
 		//Input processing
@@ -169,51 +175,34 @@ int main()
 		glm::mat4 projection = glm::perspective(glm::radians(fovy), (float)800 / 600, 0.1f, 100.0f);
 		glm::mat4 view = camera.getViewMatrix();
 
-		glBindVertexArray(lightVAO);			
-			lightShader.use();
-			lightShader.setMat4("view", view);
-			lightShader.setMat4("projection", projection);
+		ourShader.use();
 
-			glm::mat4 model(1.0);
-			for (int i = 0; i < 4; i++) {
-				model = glm::mat4(1.0);
-				model = glm::translate(model, pointLightPositions[i]);
-				model = glm::scale(model, glm::vec3(0.2));
-				lightShader.setMat4("model", model);
-				glDrawArrays(GL_TRIANGLES, 0, 36);
-			}
+		// view/projection transformations
+		ourShader.setMat4("projection", projection);
+		ourShader.setMat4("view", view);
 
-		glBindVertexArray(0);
+		// render the loaded model
+		glm::mat4 model(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
+		ourShader.setMat4("model", model);
+		ourShader.setVec3("viewPos", camera.position);
+		DirectionalLight light = DirectionalLight(glm::vec3(0.3), glm::vec3(0.5), glm::vec3(1.0f), glm::vec3(-1.0, 0.0, -1.0));
+		light.attachToShader(ourShader, "light");
+
+		PointLight pointLight = PointLight(glm::vec3(0.3, 0.5, 0.8), glm::vec3(1.0, 1.0, 1.0), glm::vec3(0.6, 0.8, 0.76), pointLightPositions[0], 1.0, 0.35, 0.44);
+		pointLight.attachToShader(ourShader, "pointLights[0]");
+		PointLight pointLight1 = PointLight(glm::vec3(0.3, 0.5, 0.8), glm::vec3(1.0, 1.0, 1.0), glm::vec3(0.6, 0.8, 0.76), pointLightPositions[1], 1.0, 0.35, 0.44);
+		pointLight1.attachToShader(ourShader, "pointLights[1]");
+		PointLight pointLight2 = PointLight(glm::vec3(0.3, 0.5, 0.8), glm::vec3(1.0, 1.0, 1.0), glm::vec3(0.6, 0.8, 0.76), pointLightPositions[2], 1.0, 0.35, 0.44);
+		pointLight2.attachToShader(ourShader, "pointLights[2]");
+		PointLight pointLight3 = PointLight(glm::vec3(0.3, 0.5, 0.8), glm::vec3(1.0, 1.0, 1.0), glm::vec3(0.6, 0.8, 0.76), pointLightPositions[3], 1.0, 0.35, 0.44);
+		pointLight3.attachToShader(ourShader, "pointLights[3]");
 
 
-		glBindVertexArray(VAO);
-			shader.use();
-			//Geometry
-			shader.setMat4("view", view);
-			shader.setMat4("projection", projection);
+		suitModel.Draw(ourShader);
 
-			//Texture 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, diffuseMap);
-
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, specularMap);
-
-			//Lighting 
-			shader.setVec3("viewPos", camera.position);
-			
-
-			for (unsigned int i = 0; i < 10; i++)
-			{
-				model = glm::mat4(1.0);
-				model = glm::translate(model, cubePositions[i]);
-				float angle = 20.0f * i;
-				model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-				shader.setMat4("model", model);
-				glDrawArrays(GL_TRIANGLES, 0, 36);
-			}
-
-		glBindVertexArray(0);
+	
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

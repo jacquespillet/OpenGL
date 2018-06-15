@@ -1,4 +1,5 @@
 #pragma once
+
 GLFWwindow* window;
 
 float fovy = 45.0; //Zoom
