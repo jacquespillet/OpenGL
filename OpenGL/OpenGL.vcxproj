@@ -132,12 +132,16 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Border.frag" />
+    <None Include="Border.vert" />
     <None Include="shaders\Basic.frag" />
     <None Include="shaders\Basic.vert" />
     <None Include="shaders\Light.frag" />
     <None Include="shaders\Light.vert" />
     <None Include="shaders\Reflect.frag" />
     <None Include="shaders\Reflect.vert" />
+    <None Include="shaders\Skybox.frag" />
+    <None Include="Skybox.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />

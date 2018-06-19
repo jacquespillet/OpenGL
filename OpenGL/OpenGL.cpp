@@ -17,6 +17,7 @@
 #include "PointLight.h"
 #include "variables.h"
 #include "utils.h"
+#include <map>
 
 using namespace std;
 
@@ -96,6 +97,14 @@ void init() {
 int main()
 {
 	init();
+	faces.push_back("images/right.jpg");
+	faces.push_back("images/left.jpg");
+	faces.push_back("images/top.jpg");
+	faces.push_back("images/bottom.jpg");
+	faces.push_back("images/front.jpg");
+	faces.push_back("images/back.jpg");
+	unsigned int cubemapTexture = loadCubeMap(faces);
+
 
 	glGenVertexArrays(1, &VAO); 
 	glGenVertexArrays(1, &lightVAO);
@@ -119,24 +128,67 @@ int main()
 
 	glBindVertexArray(lightVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) 0);
 			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+			glEnableVertexAttribArray(1);
+	glBindVertexArray(0);
 
+	glGenVertexArrays(1, &floorVAO);
+	glGenBuffers(1, &floorVBO);
+	glBindVertexArray(floorVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, floorVBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(floorVertices), &floorVertices, GL_STATIC_DRAW);
+
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+			glEnableVertexAttribArray(2);
+	glBindVertexArray(0);
+
+	glGenVertexArrays(1, &grassVAO);
+	glGenBuffers(1, &grassVBO);
+	glBindVertexArray(grassVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, grassVBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(grassVertices), &grassVertices, GL_STATIC_DRAW);
+
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+			glEnableVertexAttribArray(2);
+	glBindVertexArray(0);
+
+
+	glGenVertexArrays(1, &skyBoxVAO);
+	glGenBuffers(1, &skyBoxVBO);
+	glBindVertexArray(skyBoxVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, skyBoxVBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(skyBoxVertices), skyBoxVertices, GL_STATIC_DRAW);
+
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+			glEnableVertexAttribArray(0);
 	glBindVertexArray(0);
 
 	unsigned int diffuseMap = loadTexture("images/container2.png");
 	unsigned int specularMap = loadTexture("images/container2_specular.png");
+	unsigned int floorMap = loadTexture("images/concrete.jpg");
+	unsigned int grassMap = loadTexture("images/grass.png");
+	unsigned int windowMap = loadTexture("images/window.png");
 
+
+	//LIGHT SHADER
 	Shader lightShader("shaders/Light.vert", "shaders/Light.frag");
 
+	//REFLECTION SHADER
 	Shader shader("shaders/Reflect.vert", "shaders/Reflect.frag");
 	shader.use();
 	shader.setVec3("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
 	shader.setVec3("viewPos", camera.position);
 
-	shader.setInt("material.diffuseMap", 0);
-	shader.setInt("material.specularMap", 1);
+	shader.setInt("diffuseMap", 0);
+	shader.setInt("specularMap", 1);
 	shader.setFloat("material.shininess", 64.0);
 	
 
@@ -152,6 +204,11 @@ int main()
 	PointLight pointLight3 = PointLight(glm::vec3(0.3, 0.5, 0.8), glm::vec3(1.0, 1.0, 1.0), glm::vec3(0.6, 0.8, 0.76), pointLightPositions[3], 1.0, 0.35, 0.44);
 	pointLight3.attachToShader(shader, "pointLights[3]");
 
+	//FLOOR SHADER
+	Shader floorShader("shaders/Basic.vert", "shaders/basic.frag");
+	floorShader.setInt("boxTexture", 0);
+
+	Shader skyBoxShader("shaders/Skybox.vert", "shaders/Skybox.frag");
 
 	while (!glfwWindowShouldClose(window)) {
 		//Input processing
@@ -163,26 +220,39 @@ int main()
 		lastFrame = currentFrame;
 
 		//Rendering process
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
 
 		glm::mat4 projection = glm::perspective(glm::radians(fovy), (float)800 / 600, 0.1f, 100.0f);
 		glm::mat4 view = camera.getViewMatrix();
 
-		glBindVertexArray(lightVAO);			
-			lightShader.use();
-			lightShader.setMat4("view", view);
-			lightShader.setMat4("projection", projection);
 
+		glDepthMask(GL_FALSE);
+		skyBoxShader.use();
+		skyBoxShader.setMat4("view", glm::mat4(glm::mat3(camera.getViewMatrix())));
+		skyBoxShader.setMat4("projection", projection);
+		glBindVertexArray(skyBoxVAO);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+			glDepthMask(GL_TRUE);
+		glBindVertexArray(0);
+
+		lightShader.use();
+		lightShader.setMat4("view", view);
+		lightShader.setMat4("projection", projection);
+		lightShader.setVec3("cameraPos", camera.position);
+		glBindVertexArray(lightVAO);			
+			glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 			glm::mat4 model(1.0);
 			for (int i = 0; i < 4; i++) {
 				model = glm::mat4(1.0);
 				model = glm::translate(model, pointLightPositions[i]);
-				model = glm::scale(model, glm::vec3(0.2));
+				model = glm::scale(model, glm::vec3(0.5));
 				lightShader.setMat4("model", model);
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}
-
 		glBindVertexArray(0);
 
 
@@ -201,7 +271,9 @@ int main()
 
 			//Lighting 
 			shader.setVec3("viewPos", camera.position);
-			
+
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 
 			for (unsigned int i = 0; i < 10; i++)
 			{
@@ -212,8 +284,59 @@ int main()
 				shader.setMat4("model", model);
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}
-
 		glBindVertexArray(0);
+
+		glBindVertexArray(floorVAO);
+			floorShader.use();
+			model = glm::mat4(1.0);
+			floorShader.setMat4("model", model);
+			floorShader.setMat4("view", view);
+			floorShader.setMat4("projection", projection);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, floorMap);
+
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindVertexArray(0);
+
+		glBindVertexArray(grassVAO);
+			floorShader.use();
+			floorShader.setMat4("view", view);
+			floorShader.setMat4("projection", projection);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, grassMap);
+			for (unsigned int i = 0; i < 5; i++)
+			{
+				model = glm::mat4(1.0);
+				model = glm::translate(model, grassLocations[i]);
+				floorShader.setMat4("model", model);
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+			}
+		glBindVertexArray(0);
+
+		std::map<float, glm::vec3> sorted;
+		for (unsigned int i = 0; i < 5; i++) {
+			float distance = glm::length(camera.position - windowLocations[i]);
+			sorted[distance] = windowLocations[i];
+		}
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBindVertexArray(grassVAO);
+			floorShader.use();
+			floorShader.setMat4("view", view);
+			floorShader.setMat4("projection", projection);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, windowMap);
+			for (std::map<float, glm::vec3>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it)
+			{
+				model = glm::mat4(1.0);
+				model = glm::translate(model, it->second);
+				floorShader.setMat4("model", model);
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+			}
+		glBindVertexArray(0);
+		glDisable(GL_BLEND);
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

@@ -68,6 +68,18 @@
     <None Include="shaders\Reflect.vert">
       <Filter>Fichiers sources\Shaders</Filter>
     </None>
+    <None Include="Border.frag">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="Border.vert">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="Skybox.vert">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\Skybox.frag">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">

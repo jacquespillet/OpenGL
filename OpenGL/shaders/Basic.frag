@@ -1,16 +1,14 @@
 #version 330 core
 
 out vec4 FragColor;
-in vec4 position; 
 in vec2 texCoord;
 
-uniform sampler2D ourTexture;
-uniform sampler2D ourTexture2;
-uniform float texRatio;
+uniform sampler2D boxTexture;
 
 void main()
 {
-	vec2 newTex = texCoord;
-	newTex.x = 1.0 - newTex.x;
-   FragColor = mix(texture(ourTexture, newTex), texture(ourTexture2, newTex), texRatio);
+	vec4 texColor = texture(boxTexture, texCoord);
+	if(texColor.a < 0.1) 
+		discard;
+	FragColor = texColor;
 }
