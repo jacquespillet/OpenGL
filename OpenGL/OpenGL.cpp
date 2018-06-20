@@ -74,6 +74,7 @@ void init() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	window = glfwCreateWindow(800, 600, "Jacques", NULL, NULL);
 	if (window == NULL) {
@@ -89,6 +90,7 @@ void init() {
 
 	glViewport(0, 0, 800, 600);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_MULTISAMPLE);
 
 	glfwSetFramebufferSizeCallback(window, resizeFunc);
 	glfwSetCursorPosCallback(window, mouseFunc);
@@ -191,7 +193,7 @@ int main()
 			for (unsigned int i = 0; i < 10 ; ++i) {
 				glm::mat4 model(1.0);
 				model = glm::translate(model, cubePositions[i]);
-				model = glm::rotate(model, (float)glfwGetTime() *glm::radians(-50.0f), glm::vec3(0.5f, 1.0f, 0.5f));
+				model = glm::rotate(model, i *glm::radians(-50.0f), glm::vec3(0.5f, 1.0f, 0.5f));
 				shader.setMat4("model", model);
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}
