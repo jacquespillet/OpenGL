@@ -67,6 +67,68 @@ public:
 
 		glDeleteShader(vertex); glDeleteShader(fragment);
 	}
+	Shader(const GLchar* vertexPath, const GLchar* fragmentPath, const GLchar* geometryPath) {
+		string vertexCode, fragmentCode, geometryCode;
+		ifstream vShaderFile, fShaderFile, gShaderFile;
+
+		vShaderFile.exceptions(ifstream::failbit | ifstream::badbit); fShaderFile.exceptions(ifstream::failbit | ifstream::badbit); gShaderFile.exceptions(ifstream::failbit | ifstream::badbit);
+		try {
+			vShaderFile.open(vertexPath); fShaderFile.open(fragmentPath); gShaderFile.open(geometryPath);
+
+			stringstream vShaderStream, fShaderStream, gShaderStream;
+			vShaderStream << vShaderFile.rdbuf(); fShaderStream << fShaderFile.rdbuf(); gShaderStream << gShaderFile.rdbuf();
+
+			vShaderFile.close(); fShaderFile.close(); gShaderFile.close();
+
+			vertexCode = vShaderStream.str(); fragmentCode = fShaderStream.str(); geometryCode = gShaderStream.str();
+		}
+		catch (ifstream::failure e) {
+			cout << "failed" << endl;
+		}
+
+		const char* vShaderCode = vertexCode.c_str(); const char* fShaderCode = fragmentCode.c_str(); const char* gShaderCode = geometryCode.c_str();
+		unsigned int vertex, fragment, geometry;
+		int success;
+		char infolog[512];
+
+		vertex = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertex, 1, &vShaderCode, NULL);
+		glCompileShader(vertex);
+		glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			glGetShaderInfoLog(vertex, 512, NULL, infolog);
+			std::cout << infolog << std::endl;
+		}
+
+		fragment = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragment, 1, &fShaderCode, NULL);
+		glCompileShader(fragment);
+		glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			glGetShaderInfoLog(vertex, 512, NULL, infolog);
+			std::cout << infolog << std::endl;
+		}
+
+		geometry = glCreateShader(GL_GEOMETRY_SHADER);
+		glShaderSource(geometry, 1, &gShaderCode, NULL);
+		glCompileShader(geometry);
+		glGetShaderiv(geometry, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			glGetShaderInfoLog(geometry, 512, NULL, infolog);
+			std::cout << infolog << std::endl;
+		}
+
+		ID = glCreateProgram();
+		glAttachShader(ID, vertex); glAttachShader(ID, fragment); glAttachShader(ID, geometry);
+		glLinkProgram(ID);
+		glGetProgramiv(ID, GL_LINK_STATUS, &success);
+		if (!success) {
+			glGetProgramInfoLog(ID, 512, NULL, infolog);
+			cout << infolog << endl;
+		}
+
+		glDeleteShader(vertex); glDeleteShader(fragment); glDeleteShader(geometry);
+	}
 	void use() {
 		glUseProgram(ID);
 	}

@@ -134,10 +134,19 @@
   <ItemGroup>
     <None Include="shaders\Basic.frag" />
     <None Include="shaders\Basic.vert" />
+    <None Include="shaders\DebugDepthShader.frag" />
+    <None Include="shaders\DebugDepthShader.vert" />
+    <None Include="shaders\depthShader.frag" />
+    <None Include="shaders\depthShader.vert" />
     <None Include="shaders\Light.frag" />
     <None Include="shaders\Light.vert" />
     <None Include="shaders\Reflect.frag" />
     <None Include="shaders\Reflect.vert" />
+    <None Include="shaders\ReflectCubemap.frag" />
+    <None Include="shaders\ReflectCubemap.vert" />
+    <None Include="shaders\Shadows\depthCubemap.frag" />
+    <None Include="shaders\Shadows\depthCubemap.geo" />
+    <None Include="shaders\Shadows\depthCubemap.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />

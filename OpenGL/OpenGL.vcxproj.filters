@@ -68,6 +68,33 @@
     <None Include="shaders\Reflect.vert">
       <Filter>Fichiers sources\Shaders</Filter>
     </None>
+    <None Include="shaders\depthShader.frag">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\depthShader.vert">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\DebugDepthShader.frag">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\DebugDepthShader.vert">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\Shadows\depthCubemap.frag">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\Shadows\depthCubemap.geo">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\Shadows\depthCubemap.vert">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\ReflectCubemap.frag">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\ReflectCubemap.vert">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">
