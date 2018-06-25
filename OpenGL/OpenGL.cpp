@@ -24,7 +24,7 @@ using namespace std;
 void renderCube();
 void renderPlane();
 void renderScene(Shader &shader);
-unsigned int brickTexture, brickNormals,  woodTexture, woodNormals;
+unsigned int brickTexture, brickNormals, brickDepth,  woodTexture, woodNormals;
 void resizeFunc(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
@@ -86,35 +86,6 @@ void inputFunc(GLFWwindow* window) {
 	}
 }
 
-void init() {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	window = glfwCreateWindow(800, 600, "Jacques", NULL, NULL);
-	if (window == NULL) {
-		std::cout << "failed" << std::endl;
-		glfwTerminate();
-		exit;
-	}
-	glfwMakeContextCurrent(window);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-		exit;
-	}
-
-	glViewport(0, 0, 800, 600);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_FRAMEBUFFER_SRGB);
-
-	glfwSetFramebufferSizeCallback(window, resizeFunc);
-	glfwSetCursorPosCallback(window, mouseFunc);
-	
-	stbi_set_flip_vertically_on_load(true);
-
-}
-
 int main()
 {
 
@@ -156,8 +127,9 @@ int main()
 
 	woodTexture = loadTexture("images/wood.jpg");
 	woodNormals = loadTexture("images/wood_normal.jpg");
-	brickTexture = loadTexture("images/brickwall.jpg");
-	brickNormals = loadTexture("images/brickwall_normal.jpg");
+	brickTexture = loadTexture("images/Parallax/bricks2.jpg");
+	brickNormals = loadTexture("images/Parallax/bricks2_normal.jpg");
+	brickDepth = loadTexture("images/Parallax/bricks2_disp.jpg");
 
 
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
@@ -189,6 +161,8 @@ int main()
 	shader.setInt("diffuseTexture", 0);
 	shader.setInt("depthMap", 1);
 	shader.setInt("normals", 2);
+	shader.setInt("parallaxMap", 3);
+	shader.setFloat("heightScale", 0.05);
 
 
 	glm::vec3 lightPos(-1.0f, 0.0f, 2.0f);
@@ -278,6 +252,9 @@ void renderScene(Shader &shader)
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, brickNormals);
 
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, brickDepth);
+
 	shader.setMat4("model", model);
 	renderPlane();
 
@@ -290,13 +267,13 @@ void renderScene(Shader &shader)
 	////glEnable(GL_CULL_FACE);
 	//
 
-	for (int i = 0; i < 10; i++) {
-		// cubes
-		model = glm::mat4(1.0);
-		model = glm::translate(model, cubePositions[i]);
-		shader.setMat4("model", model);
-		renderCube();
-	}
+	//for (int i = 0; i < 10; i++) {
+	//	// cubes
+	//	model = glm::mat4(1.0);
+	//	model = glm::translate(model, cubePositions[i]);
+	//	shader.setMat4("model", model);
+	//	renderCube();
+	//}
 }
 
 
