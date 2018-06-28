@@ -132,8 +132,10 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\Basic.frag" />
-    <None Include="shaders\Basic.vert" />
+    <None Include="shaders\Blur.frag" />
+    <None Include="shaders\Blur.vert" />
+    <None Include="shaders\hdr.frag" />
+    <None Include="shaders\hdr.vert" />
     <None Include="shaders\Light.frag" />
     <None Include="shaders\Light.vert" />
     <None Include="shaders\Reflect.frag" />

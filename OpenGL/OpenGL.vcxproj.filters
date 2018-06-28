@@ -50,12 +50,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\Basic.frag">
-      <Filter>Fichiers sources\Shaders</Filter>
-    </None>
-    <None Include="shaders\Basic.vert">
-      <Filter>Fichiers sources\Shaders</Filter>
-    </None>
     <None Include="shaders\Light.frag">
       <Filter>Fichiers sources\Shaders</Filter>
     </None>
@@ -66,6 +60,18 @@
       <Filter>Fichiers sources\Shaders</Filter>
     </None>
     <None Include="shaders\Reflect.vert">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\hdr.frag">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\hdr.vert">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\Blur.frag">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\Blur.vert">
       <Filter>Fichiers sources\Shaders</Filter>
     </None>
   </ItemGroup>
