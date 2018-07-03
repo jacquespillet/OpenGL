@@ -74,6 +74,12 @@
     <None Include="shaders\Reflect.vert">
       <Filter>Fichiers sources\Shaders</Filter>
     </None>
+    <None Include="shaders\deferred.frag">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
+    <None Include="shaders\deferred.vert">
+      <Filter>Fichiers sources\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">

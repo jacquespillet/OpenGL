@@ -136,6 +136,8 @@
   <ItemGroup>
     <None Include="shaders\Basic.frag" />
     <None Include="shaders\Basic.vert" />
+    <None Include="shaders\deferred.frag" />
+    <None Include="shaders\deferred.vert" />
     <None Include="shaders\Light.frag" />
     <None Include="shaders\Light.vert" />
     <None Include="shaders\Reflect.frag" />

@@ -76,16 +76,3 @@ glm::vec3 cubePositions[] = {
 	glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
-//Lights
-glm::vec3 lightPos(1.0f, 0.0f, 0.0f);
-glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-float ambientStrength = 0.2;
-float specularStrength= 0.7;
-glm::vec3 ambient = ambientStrength * lightColor;
-
-glm::vec3 pointLightPositions[] = {
-	glm::vec3(0.7f,  0.2f,  2.0f),
-	glm::vec3(2.3f, -1.3f, -1.0f),
-	glm::vec3(-2.0f,  2.0f, -2.0f),
-	glm::vec3(0.0f,  0.0f, -1.5f)
-};
