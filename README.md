@@ -1,7 +1,7 @@
 # OpenGL
 Computer graphics algorithms implemented in each branch. 
 
-Pictures on http://jacquespillet.club/computer-graphics
+Pictures on http://jacquespillet.club
 
 - High dynamic range
 - Physically based rendering
